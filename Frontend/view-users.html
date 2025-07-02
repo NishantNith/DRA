@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Users</title>
+  <link rel="stylesheet" href="view-users.css" />
+</head>
+<body>
+  <header>
+    <h1>All Registered Users</h1>
+    <input type="text" id="searchInput" placeholder="Search by name or email..." />
+    <button onclick="goToDashboard()" class="back-btn">
+  ← Back to Dashboard
+</button>
+
+  </header>
+
+  <main>
+    <div id="userContainer" class="user-container"></div>
+    <p id="noUsers" class="no-users">No users found.</p>
+  </main>
+<!-- Edit User Modal -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h2>Edit User</h2>
+    <input type="text" id="editName" placeholder="Name" />
+    <input type="email" id="editEmail" placeholder="Email" />
+    <input type="text" id="editPhone" placeholder="Phone" />
+    <input type="text" id="editDepartment" placeholder="Department" />
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+      <button onclick="closeModal()" class="delete-btn">Cancel</button>
+      <button onclick="saveEdit()" class="edit-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+  <script src="view-users.js"></script>
+</body>
+</html>

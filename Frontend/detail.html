@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Location Details</title>
+  <link rel="stylesheet" href="detail.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 id="pageTitle">Location Details</h1>
+      <button onclick="window.location.href='progress.html'">Back to Progress</button>
+    </header>
+
+    <!-- Summary Panel -->
+    <section class="summary-panel">
+      <h2>Summary</h2>
+      <p><strong>Applicable Yes:</strong> <span id="appYesCount">0</span></p>
+      <p><strong>Registered Yes:</strong> <span id="regYesCount">0</span></p>
+    </section>
+    
+<div id="locationDetails" class="entry-scroll-container">
+  <!-- Populated dynamically -->
+</div>
+
+    <!-- Charts -->
+    <section class="charts">
+      <div style="max-width: 400px; margin-bottom: 20px;">
+        <h3>Registration % out of Applicable</h3>
+        <canvas id="percentagePieChart"></canvas>
+      </div>
+      <div style="max-width: 600px;">
+        <h3>Applicable vs Registered (Yes/No)</h3>
+        <canvas id="barChart"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <script src="detail.js"></script>
+</body>
+</html>

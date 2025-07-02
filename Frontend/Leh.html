@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leh Form - Multi Step</title>
+  <link rel="stylesheet" href="Leh.css">
+  <script defer src="Leh.js"></script>
+</head>
+<body>
+
+<!-- 🔝 Top Navigation Bar -->
+<div class="top-bar">
+  <h2 class="heading">Add Data</h2>
+  <a href="work.html" class="back-link">Back to Work Locations</a>
+</div>
+
+<!-- 📦 Main Container -->
+<div class="container">
+  <aside class="progress-sidebar">
+    <h2>Progress</h2>
+    <ul class="steps">
+      <li class="step active" id="step1Indicator">1. Initiative Details</li>
+      <li class="step" id="step2Indicator">2. Registration Info</li>
+      <li class="step" id="step3Indicator">3. Review</li>
+    </ul>
+  </aside>
+
+  <main class="form-content">
+
+    <!-- Step 1 -->
+    <section class="form-step active" id="step1">
+      <h2>Step 1: Initiative Title & Description</h2>
+      <form id="formStep1">
+        <label>Description
+          <select id="description" required>
+            <option value="">Select Description</option>
+            <option value="CLRA">CLRA Licence - Act 1970</option>
+            <option value="BOCW">BOCW Act</option>
+          </select>
+        </label>
+
+        <label>Type of Permission
+          <select id="permissionType" required>
+            <option value="">Select Type</option>
+            <option value="Permission">Permission</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Consent">Consent</option>
+          </select>
+        </label>
+
+        <label>Agency
+          <select id="agency" required>
+            <option value="">Select Agency</option>
+            <option value="Labour Department">Labour Department</option>
+            <option value="State Pollution Board">State Pollution Control Board</option>
+            <option value="Govt/Private">Govt/Private</option>
+          </select>
+        </label>
+
+        <label>Applicable (Yes/No)
+          <select id="applicable" required>
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+
+        <button type="button" onclick="goToStep2()">Next</button>
+      </form>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="form-step" id="step2">
+      <h2>Step 2: Registration Info</h2>
+      <form id="formStep2">
+        <label>Registered (Yes/No)
+          <select id="registered" required>
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label>
+
+        <label>License Number
+          <input type="text" id="license" />
+        </label>
+
+        <label>Validity
+          <input type="date" id="validity" />
+        </label>
+
+        <label>Quantity / Manpower Nos
+          <input type="text" id="quantity" />
+        </label>
+
+        <label>Remarks
+          <input type="text" id="remarks" />
+        </label>
+
+        <button type="button" onclick="goToStep1()">Previous</button>
+        <button type="button" onclick="goToReview()">Next</button>
+      </form>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="form-step" id="step3">
+      <h2>Step 3: Review</h2>
+      <div id="reviewData"></div>
+      <button type="button" onclick="goToStep1()">Previous</button>
+      <button type="button" onclick="submitLehData()">Submit</button>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="form-step" id="step4" style="display: none;">
+      <h2>Do you want to add another entry?</h2>
+      <p>Location: <strong id="locationName"></strong></p>
+      <button type="button" onclick="repeatForm()">Yes</button>
+      <button type="button" onclick="finishForm()">No</button>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+:root {
+  --primary: #4297a0;
+  --primary-light: #5fb3bd;
+  --primary-dark: #2f6d75;
+  --text-light: #EEEFE0;
+  --text-dark: #2f5061;
+  --accent: #e57f84;
+  --background: #f8fafb;
+  --background-soft: #f3f5ed;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  background-color: var(--background-soft);
+  color: var(--text-dark);
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: var(--background-soft);
+  padding: 30px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-dark);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.user-profile i {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.user-profile p {
+  margin-top: 10px;
+  font-weight: 600;
+  background-color: var(--primary);
+  padding: 10px 16px;
+  border-radius: 12px;
+  width: 100%;
+  text-align: center;
+  color: var(--text-light);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 16px;
+}
+
+.sidebar nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  background-color: white;
+  color: var(--text-dark);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  border-left: 6px solid var(--primary);
+  box-shadow: 0 4px 6px rgba(66, 151, 160, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+  background-color: var(--primary);
+  color: white;
+  border-left-color: white;
+}
+
+.user-info {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.user-info button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.user-info button:hover {
+  background-color: var(--accent);
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 30px;
+  background-color: var(--background);
+  overflow-y: auto;
+ ;
+}
+
+.main-content h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 25px;
+  border-radius: 14px;
+  border-left: 6px solid var(--primary);
+  box-shadow: 0 6px 10px rgba(66, 151, 160, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 18px rgba(66, 151, 160, 0.4);
+}
+
+.card i {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+}
+
+.card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+
+/* Individual reminder card inside section */
+.reminder-section {
+  
+  padding: 20px 25px;
+  background: #fff;
+  border-radius: 14px;
+  border-left: 6px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+ 
+}
+
+.reminder-section h2 {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.reminder-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.reminder-card {
+  background: #fff1f1;
+  padding: 16px;
+  border-radius: 10px;
+  border-left: 5px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.reminder-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #d24d57;
+}
+
+.reminder-card p {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+
+.bell {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+ 
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+}
+
+.modal-content input {
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-actions button#confirmAddLocation {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.modal-actions button#cancelAddLocation {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+/* === Mobile: Collapse Sidebar === */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 15px;
+    min-height: auto;
+  }
+
+  .sidebar nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .sidebar nav ul li {
+    margin-bottom: 0;
+  }
+
+  .sidebar nav ul li a {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+  .user-profile p {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .user-info button {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .reminder-cards {
+    grid-template-columns: 1fr;
+  }
+}
+.ok-btn {
+  background-color: #4CAF50; /* green */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.ok-btn:hover {
+  background-color: #45a049;
+}
+
+.ok-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.go-btn {
+  background-color: #4CAF50; /* green */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.go-btn:hover {
+  background-color: #45a049;
+}
+
+.go-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

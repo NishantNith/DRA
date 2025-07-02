@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="user-profile">
+        <i class="fas fa-user-circle fa-3x"></i>
+        <p id="username">New Admin</p>
+      </div>
+
+      <nav>
+        <ul class="sidebar-menu">
+         
+          <li><a href="#" id="addInitiativeSidebar"><i class="fas fa-plus-circle"></i> Compliance Master</a></li>
+          <li><a href="#" id="manageUsersLink"><i class="fas fa-users-cog"></i> Manage Users</a></li>
+          <li><a href="#" id="showUsersLink"><i class="fas fa-eye"></i> Show All Users</a></li>
+          <li><a href="#" id="progressOverviewLink"><i class="fas fa-chart-pie"></i> Progress Overview</a></li>
+         <li><a href="add-work-locations.html"><i class="fas fa-map-marker-alt"></i> Add Work Location</a></li>
+         <li><a href="graph.html"><i class="fas fa-chart-bar"></i> Graph</a></li> <!-- 🆕 Graph Card -->
+         <li><a href="download.html"><i class="fas fa-download"></i> Download Details</a></li>
+         <li><a href="future.html"><i class="fas fa-hourglass-half"></i> Future Feature</a></li>
+
+
+        </ul>
+      </nav>
+
+      <div class="user-info">
+        <button id="logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <h1>Dashboard Overview</h1>
+      <div class="card-container">
+        <div class="card" id="addInitiativeCard">
+          <i class="fas fa-plus-circle"></i>
+          <h2>Compliance Master</h2>
+          <p>View and manage Compliance Master</p>
+        </div>
+
+        <div class="card" id="manageUsersCard">
+          <i class="fas fa-users-cog"></i>
+          <h2>Manage Users</h2>
+          <p>View and manage system users</p>
+        </div>
+
+        <div class="card" id="showUsersBtn">
+          <i class="fas fa-eye"></i>
+          <h3>Show All Users</h3>
+          <p>View the list of all registered users</p>
+        </div>
+
+        <div class="card" id="progressCard">
+          <i class="fas fa-chart-line"></i>
+          <h2>Progress Overview</h2>
+          <p>View initiative progress in charts</p>
+        </div>
+
+     
+  <div class="card" id="manageWorkLocationCard">
+    <a href="add-work-locations.html"></a>
+    <i class="fas fa-map-marker-alt"></i>
+    <h2>Add Work Location</h2>
+    <p>Add new work locations here</p>
+  </div>
+</a>
+ <div class="card" onclick="window.location.href='graph.html'">
+          <i class="fas fa-chart-bar"></i>
+          <h2>Graph</h2>
+          <p>Visualize number of entries per location.</p>
+        </div>
+   <div class="card" onclick="window.location.href='download.html'">
+  <i class="fas fa-download"></i>
+  <h2>Download Details</h2>
+  <p>Export all work location details to Excel</p>
+</div>
+<div class="card" onclick="window.location.href='future.html'">
+  <i class="fas fa-hourglass-half"></i>
+  <h2>Future Feature</h2>
+  <p>This area is reserved for upcoming projects</p>
+</div>
+
+
+<section class="reminder-section">
+  <h2>🔔 Expiry Reminders</h2>
+  <div id="reminderCards" class="reminder-cards"></div>
+</section>
+    </main>
+  </div>
+  </div> <!-- End of .card-container -->
+
+<!-- Separate Reminder Section -->
+
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
