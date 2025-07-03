@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const endpoint = isEdit && editId
-      ? `http://localhost:3000/leh-data/id/${editId}`
-      : `http://localhost:3000/leh-data`;
+      ? `https://dra-backend.vercel.app/leh-data/id/${editId}`
+      : `https://dra-backend.vercel.app/leh-data`;
 
     const method = isEdit ? "PUT" : "POST";
 

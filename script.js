@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch("https://dra-backend.vercel.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/reset-password", {
+      const res = await fetch("https://dra-backend.vercel.app/reset-password", {
         method: "POST", // ✅ Corrected method
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail, newPassword })
