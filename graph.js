@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   try {
-    const res = await fetch("http://localhost:3000/leh-data");
+    const res = await fetch("https://dra-backend.vercel.app/leh-data");
     const lehData = await res.json();
 
     // ✅ Filter lehData to only valid locations

@@ -143,8 +143,8 @@ const editId = params.get("id");
     };
 
     const endpoint = isEdit && editId
-      ? `http://localhost:3000/leh-data/id/${editId}`
-      : `http://localhost:3000/leh-data`;
+      ? `https://dra-backend.vercel.app/leh-data/id/${editId}`
+      : `https://dra-backend.vercel.app/leh-data`;
 
     const method = isEdit ? "PUT" : "POST";
 
@@ -200,7 +200,7 @@ const editId = params.get("id");
 
   // ✅ Load data in edit mode
 if (isEdit && editId) {
-  fetch(`http://localhost:3000/leh-data/id/${editId}`)
+  fetch(`https://dra-backend.vercel.app/leh-data/id/${editId}`)
     .then(res => res.json())
     .then(entry => {
   currentLocation = entry.location || "N/A"; // ✅ Fix: set correct location
