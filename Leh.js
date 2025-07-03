@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load existing data in edit mode
   if (isEdit && editId) {
-    fetch(`http://localhost:3000/leh-data/id/${editId}`)
+    fetch(`https://dra-backend.vercel.app/leh-data/id/${editId}`)
       .then(res => res.json())
       .then(entry => {
         if (!entry) return;
