@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   let currentLocation = params.get("location") || "";
-const isEdit = params.get("mode") === "edit";
-const editId = params.get("id");
+  const isEdit = params.get("mode") === "edit";
+  let editId = params.get("id"); // <-- make this mutable
 
   const user = JSON.parse(sessionStorage.getItem("user")) || {};
-  const userId = user.id || 1;
+  const userId = user._id || user.id || null;
 
   const descriptionInput = document.getElementById("description");
   const permissionTypeInput = document.getElementById("permissionType");
@@ -17,6 +17,7 @@ const editId = params.get("id");
   const validityInput = document.getElementById("validity");
   const remarksInput = document.getElementById("remarks");
   const reviewData = document.getElementById("reviewData");
+  const locationDisplay = document.getElementById("locationDisplay");
 
   const step1 = document.getElementById("step1");
   const step2 = document.getElementById("step2");
@@ -29,15 +30,20 @@ const editId = params.get("id");
     document.getElementById("step3Indicator")
   ];
 
+  if (!currentLocation && !isEdit) {
+    alert("No location specified. Redirecting to Work Locations.");
+    window.location.href = "work.html";
+    return;
+  }
+
   document.querySelector(".heading").textContent = isEdit ? `Edit Data` : `Add ${currentLocation} Data`;
+  locationDisplay.value = currentLocation;
 
-  const today = new Date().toISOString().split("T")[0];
-  validityInput.setAttribute('min', today);
+  // Minimum validity date = today
+  validityInput.setAttribute('min', new Date().toISOString().split("T")[0]);
 
-  function showStep(step) {
-    step1.classList.remove("active");
-    step2.classList.remove("active");
-    step3.classList.remove("active");
+  const showStep = (step) => {
+    [step1, step2, step3].forEach(el => el.classList.remove("active"));
     step4.style.display = "none";
 
     if (step === 1) step1.classList.add("active");
@@ -48,27 +54,27 @@ const editId = params.get("id");
       document.getElementById("locationName").textContent = currentLocation;
     }
 
-    stepIndicators.forEach((el, index) => {
-      el.classList.toggle("active", index === step - 1);
-    });
-  }
+    stepIndicators.forEach((el, i) => el.classList.toggle("active", i === step - 1));
+  };
 
-  function defaultIfEmpty(val) {
-    return val.trim() === "" ? "N/A" : val.trim();
-  }
+  const defaultIfEmpty = (val) => val.trim() === "" ? "N/A" : val.trim();
 
   window.goToStep1 = () => showStep(1);
 
   window.goToStep2 = () => {
-    if (applicableSelect.value === "No") {
+    const applicable = applicableSelect.value;
+
+    if (applicable === "No") {
       registeredSelect.value = "No";
-      registeredSelect.disabled = true;
       licenseInput.value = "N/A";
       validityInput.value = "";
       remarksInput.value = "N/A";
+
+      registeredSelect.disabled = true;
       licenseInput.disabled = true;
       validityInput.disabled = true;
       remarksInput.disabled = true;
+
       goToReview();
     } else {
       registeredSelect.disabled = false;
@@ -80,15 +86,6 @@ const editId = params.get("id");
   };
 
   window.goToReview = () => {
-    if (registeredSelect.value === "No") {
-      licenseInput.value = "N/A";
-      validityInput.value = "";
-      remarksInput.value = "N/A";
-      licenseInput.disabled = true;
-      validityInput.disabled = true;
-      remarksInput.disabled = true;
-    }
-
     const validityVal = validityInput.value.trim();
     const validityDisplay = validityVal === "" ? "N/A" : validityVal;
 
@@ -114,19 +111,7 @@ const editId = params.get("id");
 
   window.submitLehData = () => {
     const locationToSubmit = currentLocation.trim();
-    if (!locationToSubmit) {
-      alert("Location is missing. Please go back and select location properly.");
-      return;
-    }
-
-    // Explicitly assign N/A if fields are disabled
-    const regNo = licenseInput.disabled ? "N/A" : defaultIfEmpty(licenseInput.value);
-    const remarks = remarksInput.disabled ? "N/A" : defaultIfEmpty(remarksInput.value);
-    const validity = (validityInput.disabled || validityInput.value.trim() === "" || validityInput.value.trim() === "N/A")
-      ? null : validityInput.value.trim();
-
-    const qtyRaw = defaultIfEmpty(quantityInput.value);
-    const quantity = /^\d+$/.test(qtyRaw) ? parseInt(qtyRaw) : null;
+    if (!locationToSubmit) return alert("Location is missing.");
 
     const data = {
       user_id: userId,
@@ -136,10 +121,10 @@ const editId = params.get("id");
       agency: defaultIfEmpty(agencyInput.value),
       applicable: applicableSelect.value,
       registered: registeredSelect.value,
-      registration_number: regNo,
-      validity,
-      remarks,
-      quantity
+      registration_number: licenseInput.disabled ? "N/A" : defaultIfEmpty(licenseInput.value),
+      remarks: remarksInput.disabled ? "N/A" : defaultIfEmpty(remarksInput.value),
+      validity: (validityInput.disabled || !validityInput.value.trim()) ? null : validityInput.value.trim(),
+      quantity: /^\d+$/.test(quantityInput.value.trim()) ? parseInt(quantityInput.value.trim()) : null
     };
 
     const endpoint = isEdit && editId
@@ -161,13 +146,13 @@ const editId = params.get("id");
           window.location.href = "progress.html";
         } else {
           showStep(4);
-          if (validity) {
+          if (data.validity) {
             const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
             reminders.push({
               id: Date.now(),
               location: currentLocation,
               description: data.description,
-              validity: validity,
+              validity: data.validity,
               remarks: data.remarks,
               disabled: false
             });
@@ -175,7 +160,7 @@ const editId = params.get("id");
           }
         }
       } else {
-        alert("Failed: " + result.message);
+        alert("Failed: " + (result.message || "Unknown error"));
       }
     })
     .catch(err => {
@@ -193,41 +178,48 @@ const editId = params.get("id");
     licenseInput.disabled = false;
     validityInput.disabled = false;
     remarksInput.disabled = false;
+    locationDisplay.value = currentLocation;
     showStep(1);
   };
 
   window.finishForm = () => window.location.href = "progress.html";
 
-  // ✅ Load data in edit mode
-if (isEdit && editId) {
-  fetch(`http://localhost:3000/leh-data/id/${editId}`)
-    .then(res => res.json())
-    .then(entry => {
-  currentLocation = entry.location || "N/A"; // ✅ Fix: set correct location
-  document.querySelector(".heading").textContent = `Edit ${currentLocation} Data`; // ✅ Fix heading
-  descriptionInput.value = entry.description || "";
-  permissionTypeInput.value = entry.permission_type || "";
-  agencyInput.value = entry.agency || "";
-  applicableSelect.value = entry.applicable || "";
-  registeredSelect.value = entry.registered || "";
-  licenseInput.value = entry.registration_number || "";
-  validityInput.value = entry.validity ? entry.validity.substring(0, 10) : "";
-  remarksInput.value = entry.remarks || "";
-  quantityInput.value = entry.quantity || "";
+  // Load existing data in edit mode
+  if (isEdit && editId) {
+    fetch(`http://localhost:3000/leh-data/id/${editId}`)
+      .then(res => res.json())
+      .then(entry => {
+        if (!entry) return;
 
-  // ✅ Auto-disable fields if applicable is "No"
-  if (entry.applicable === "No") {
-    registeredSelect.disabled = true;
-    licenseInput.disabled = true;
-    validityInput.disabled = true;
-    remarksInput.disabled = true;
+        // Ensure editId is set to the real MongoDB _id (in case the URL param is not correct)
+        if (entry._id) editId = entry._id;
+
+        currentLocation = entry.location || "N/A";
+        document.querySelector(".heading").textContent = `Edit ${currentLocation} Data`;
+        locationDisplay.value = currentLocation;
+
+        descriptionInput.value = entry.description || "";
+        permissionTypeInput.value = entry.permission_type || "";
+        agencyInput.value = entry.agency || "";
+        applicableSelect.value = entry.applicable || "";
+        registeredSelect.value = entry.registered || "";
+        licenseInput.value = entry.registration_number || "";
+        validityInput.value = entry.validity ? entry.validity.substring(0, 10) : "";
+        remarksInput.value = entry.remarks || "";
+        quantityInput.value = entry.quantity || "";
+
+        if (entry.applicable === "No") {
+          registeredSelect.disabled = true;
+          licenseInput.disabled = true;
+          validityInput.disabled = true;
+          remarksInput.disabled = true;
+        }
+      })
+      .catch(err => {
+        console.error("❌ Error loading data:", err);
+        alert("Failed to load data.");
+      });
   }
-})
-
-    .catch(err => {
-      console.error("❌ Failed to load entry:", err);
-    });
-}
 
   showStep(1);
 });

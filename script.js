@@ -45,6 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email, password })
       });
 
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Login failed. Status:", res.status, "Body:", errorText);
+        alert("Server error: " + res.status + ". Please try again.");
+        return;
+      }
+
       const data = await res.json();
 
       if (data.success) {
@@ -93,6 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail, newPassword })
       });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Reset failed. Status:", res.status, "Body:", errorText);
+        alert("Server error: " + res.status + ". Try again.");
+        return;
+      }
 
       const result = await res.json();
       if (result.success) {
