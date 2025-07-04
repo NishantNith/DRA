@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const select = document.getElementById("locationSelect");
   const downloadBtn = document.getElementById("downloadBtn");
 
-  const res = await fetch("https://dra-backend.vercel.app/leh-data");
+  const res = await fetch("https://dra-backend.onrender.com/leh-data");
   const data = await res.json();
 
   const baseLocations = [
