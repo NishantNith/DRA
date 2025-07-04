@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const endpoint = isEdit && editId
-      ? `https://dra-backend.vercel.app/leh-data/id/${editId}`
-      : `https://dra-backend.vercel.app/leh-data`;
+      ? `https://dra-backend.onrender.com/leh-data/id/${editId}`
+      : `https://dra-backend.onrender.com/leh-data`;
 
     const method = isEdit ? "PUT" : "POST";
 
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load existing data in edit mode
   if (isEdit && editId) {
-    fetch(`https://dra-backend.vercel.app/leh-data/id/${editId}`)
+    fetch(`https://dra-backend.onrender.com/leh-data/id/${editId}`)
       .then(res => res.json())
       .then(entry => {
         if (!entry) return;

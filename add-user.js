@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('reviewSection').style.display = 'block';
   });
 document.getElementById('confirmAddUser').addEventListener('click', async () => {
-  const res = await fetch('https://dra-backend.vercel.app/add-user', {
+  const res = await fetch('https://dra-backend.onrender.com/add-user', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)

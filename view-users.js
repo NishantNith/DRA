@@ -8,7 +8,7 @@ let editingUserId = null;
 // 🟢 Fetch users from backend
 async function fetchUsers() {
   try {
-    const res = await fetch("https://dra-backend.vercel.app/users");
+    const res = await fetch("https://dra-backend.onrender.com/users");
     const data = await res.json();
     users = data;
     renderUsers();
@@ -67,7 +67,7 @@ async function deleteUser(id) {
   if (!confirm("Are you sure you want to delete this user?")) return;
 
   try {
-    const res = await fetch(`https://dra-backend.vercel.app/delete-user/${Number(id)}`, {
+    const res = await fetch(`https://dra-backend.onrender.com/delete-user/${Number(id)}`, {
   method: "DELETE"
 });
 
@@ -115,7 +115,7 @@ async function saveEdit() {
   };
 
   try {
-    const res = await fetch(`https://dra-backend.vercel.app/edit-user/${editingUserId}`, {
+    const res = await fetch(`https://dra-backend.onrender.com/edit-user/${editingUserId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedUser)

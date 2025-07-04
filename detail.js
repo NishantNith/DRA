@@ -23,7 +23,7 @@ async function loadData() {
   }
 
   try {
-    const res = await fetch(`https://dra-backend.vercel.app/leh-data/location/${encodeURIComponent(location)}`);
+    const res = await fetch(`https://dra-backend.onrender.com/leh-data/location/${encodeURIComponent(location)}`);
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {
@@ -130,7 +130,7 @@ async function deleteEntry(id) {
   if (!confirm("Are you sure you want to delete this entry?")) return;
 
   try {
-    const res = await fetch(`https://dra-backend.vercel.app/leh-data/id/${id}`, {
+    const res = await fetch(`https://dra-backend.onrender.com/leh-data/id/${id}`, {
       method: "DELETE"
     });
 

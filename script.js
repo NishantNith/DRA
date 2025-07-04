@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("https://dra-backend.vercel.app/login", {
+      const res = await fetch("https://dra-backend.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("https://dra-backend.vercel.app/reset-password", {
+      const res = await fetch("https://dra-backend.onrender.com/reset-password", {
         method: "POST", // ✅ Corrected method
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail, newPassword })

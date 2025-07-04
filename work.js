@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ✏️ Form edit mode (on leh.html)
   if (form && mode === "edit" && locationToEdit) {
-    fetch(`https://dra-backend.vercel.app/leh-data/location/${encodeURIComponent(locationToEdit)}`)
+    fetch(`https://dra-backend.onrender.com/leh-data/location/${encodeURIComponent(locationToEdit)}`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -69,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
         remarks: form.remarks.value
       };
 
-      let url = "https://dra-backend.vercel.app/leh-data";
+      let url = "https://dra-backend.onrender.com/leh-data";
       let method = "POST";
 
       if (mode === "edit" && locationToEdit) {
-        url = `https://dra-backend.vercel.app/leh-data/location/${encodeURIComponent(locationToEdit)}`;
+        url = `https://dra-backend.onrender.com/leh-data/location/${encodeURIComponent(locationToEdit)}`;
         method = "PUT";
       }
 

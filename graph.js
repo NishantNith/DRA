@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   try {
-    const res = await fetch("https://dra-backend.vercel.app/leh-data");
+    const res = await fetch("https://dra-backend.onrender.com/leh-data");
     const lehData = await res.json();
 
     // ✅ Filter lehData to only valid locations
