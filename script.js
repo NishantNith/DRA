@@ -95,13 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-<<<<<<< HEAD
-      const res = await fetch("https://dra-backend.vercel.app/reset-password", {
-        method: "POST", 
-=======
       const res = await fetch("https://dra-backend.onrender.com/reset-password", {
         method: "POST", // ✅ Corrected method
->>>>>>> 5243cbe0918b3df9b4a452324f971bb9c5a37bbc
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail, newPassword })
       });
