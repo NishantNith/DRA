@@ -48,8 +48,8 @@ async function loadData() {
         <p><strong>Quantity:</strong> ${escapeHtml(entry.quantity?.toString() || "N/A")}</p>
 
         <div class="entry-actions">
-          <button onclick="editEntry(${entry.id}, '${escapeHtml(entry.location)}')">✏️ Edit</button>
-          <button onclick="deleteEntry(${entry.id})">🗑️ Delete</button>
+          <button onclick="editEntry('${entry._id}', '${escapeHtml(entry.location)}')">✏️ Edit</button>
+          <button onclick="deleteEntry('${entry._id}')">🗑️ Delete</button>
         </div>
       </div>
     `).join('');
