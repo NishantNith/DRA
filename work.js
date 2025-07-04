@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   boxes.forEach(box => {
     box.addEventListener('click', () => {
       const location = box.getAttribute('data-name');
-      window.location.href = `leh.html?location=${encodeURIComponent(location)}`;
+      window.location.href = `Leh.html?location=${encodeURIComponent(location)}`;
     });
   });
 
