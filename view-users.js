@@ -39,9 +39,9 @@ function renderUsers(filter = "") {
     const card = document.createElement("div");
     card.className = "user-card";
 
-    let buttonsHTML = `<button class="edit-btn" onclick="openEditModal(${user.id})">Edit</button>`;
+    let buttonsHTML = `<button class="edit-btn" onclick="openEditModal('${user._id}')">Edit</button>`;
     if (user.role !== 'admin') {
-      buttonsHTML += `<button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>`;
+      buttonsHTML += `<button class="delete-btn" onclick="deleteUser('${user._id}')">Delete</button>`;
     }
 
     card.innerHTML = `
@@ -67,14 +67,14 @@ async function deleteUser(id) {
   if (!confirm("Are you sure you want to delete this user?")) return;
 
   try {
-    const res = await fetch(`https://dra-backend.onrender.com/delete-user/${Number(id)}`, {
-  method: "DELETE"
-});
+    const res = await fetch(`https://dra-backend.onrender.com/delete-user/${id}`, {
+      method: "DELETE"
+    });
 
     const result = await res.json();
 
     if (result.success) {
-      users = users.filter(user => user.id !== id);
+      users = users.filter(user => user._id !== id);
       renderUsers(searchInput.value);
     } else {
       alert("Error: " + result.message);
