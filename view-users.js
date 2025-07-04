@@ -86,7 +86,7 @@ async function deleteUser(id) {
 
 // 🟢 Open modal with user data
 function openEditModal(id) {
-  const user = users.find(u => u.id === id);
+  const user = users.find(u => u._id === id);
   if (!user) return;
 
   editingUserId = id;
