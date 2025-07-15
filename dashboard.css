@@ -203,7 +203,6 @@ body, html {
   flex-direction: row;
   gap: 16px;
   flex-wrap: nowrap;            /* ❗Force horizontal layout */
-  overflow-x: auto;             /* ❗Enable horizontal scroll */
   -webkit-overflow-scrolling: touch;
   padding-bottom: 10px;
 }
