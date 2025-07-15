@@ -196,10 +196,14 @@ body, html {
 }
 
 .reminder-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: row;
   gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
 }
+
 .reminder-cards::-webkit-scrollbar {
   height: 8px;
 }
