@@ -84,10 +84,18 @@ document.addEventListener("DOMContentLoaded", async () => {
           ? [...new Set(filtered.map(d => d.location))]
           : [selected];
 
-        const headers = [
-          "Description", "Permission Type", "Agency", "Applicable",
-          "Registered", "License", "Validity", "Remarks", "Quantity"
-        ];
+       const headers = [
+  "Sl No.",
+  "Description",
+  "Type of Permission",
+  "Agency",
+  "Applicable (Yes/No)",
+  "Registered (Yes/No)",
+  "License/Registration/Documents nos.",
+  "Valid upto",
+  "Manpower Nos./ Quantity",
+  "Remarks"
+];
 
         let maxRows = 0;
         const blocks = [];
@@ -104,26 +112,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (reg) registered++;
 
             rows.push([
-              item.description || "N/A",
-              item.permission_type || "N/A",
-              item.agency || "N/A",
-              item.applicable || "No",
-              item.registered || "No",
-              item.license || item.registration_number || "N/A",
-              item.validity ? new Date(item.validity) : "N/A",
-              item.remarks || "N/A",
-              item.quantity || "N/A"
-            ]);
+  rows.length,  // Sl No.
+  item.description || "N/A",
+  item.permission_type || "N/A",
+  item.agency || "N/A",
+  item.applicable || "No",
+  item.registered || "No",
+  item.license || item.registration_number || "N/A",
+  item.validity ? new Date(item.validity) : "N/A",
+  item.quantity || "N/A",
+  item.remarks || "N/A"
+]);
+
           }
 
           const percentage = applicable === 0 ? "0%" : ((registered / applicable) * 100).toFixed(1) + "%";
 
-          rows.push([
-            "Total Applicable", applicable,
-            "Total Registered", registered,
-            "% Registered", percentage,
-            "", "", "", "", ""
-          ]);
+         rows.push([
+  "", "", "", "",
+  "Total Applicable", applicable,
+  "Total Registered", registered,
+  "% Registered", percentage,
+  ""
+]);
 
           maxRows = Math.max(maxRows, rows.length);
           blocks.push({ title: location, rows });
