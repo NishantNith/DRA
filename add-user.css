@@ -169,6 +169,25 @@ button[type="submit"]:hover {
   color: #444;
 }
 
+#confirmAddUser {
+  background-color: #00c2c2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 194, 194, 0.2);
+}
+
+#confirmAddUser:hover {
+  background-color: #00a8a8;
+  box-shadow: 0 6px 14px rgba(0, 194, 194, 0.3);
+  transform: translateY(-2px);
+}
+
 #statusMessage {
   margin-top: 15px;
   font-size: 14px;
