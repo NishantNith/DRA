@@ -199,18 +199,9 @@ body, html {
   display: flex;
   flex-direction: row;
   gap: 16px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
-}
-
-.reminder-cards::-webkit-scrollbar {
-  height: 8px;
-}
-
-.reminder-cards::-webkit-scrollbar-thumb {
-  background-color: var(--accent);
-  border-radius: 4px;
+  flex-wrap: nowrap;        /* Keep all items in one row */
+  justify-content: flex-start; /* Align items to the start */
+  overflow: visible;        /* No scroll */
 }
 
 .reminder-card {
@@ -219,9 +210,10 @@ body, html {
   border-radius: 10px;
   border-left: 5px solid var(--accent);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  flex: 0 0 260px; /* fixes width and prevents shrinking */
-  scroll-snap-align: start;
+  width: 260px;
+  flex-shrink: 0;  /* Prevents the card from shrinking */
 }
+
 
 .reminder-card h3 {
   margin: 0;
@@ -347,10 +339,17 @@ body, html {
     grid-template-columns: 1fr;
   }
 
+}
+@media (max-width: 768px) {
   .reminder-cards {
-    grid-template-columns: 1fr;
+    flex-wrap: wrap; /* allow wrapping into rows */
+  }
+
+  .reminder-card {
+    flex: 1 1 100%;  /* take full width on small screens */
   }
 }
+
 .ok-btn {
   background-color: #4CAF50; /* green */
   color: white;
