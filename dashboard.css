@@ -126,7 +126,6 @@ body, html {
   padding: 40px 30px;
   background-color: var(--background);
   overflow-y: auto;
- ;
 }
 
 .main-content h1 {
@@ -152,7 +151,6 @@ body, html {
   box-shadow: 0 6px 10px rgba(66, 151, 160, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-
 }
 
 .card:hover {
@@ -177,8 +175,10 @@ body, html {
   font-size: 0.95rem;
 }
 
+/* ============================= */
+/* Reminder Section Styles Below */
+/* ============================= */
 
-/* Reminder Section */
 .reminder-section {
   padding: 20px 25px;
   background: #fff;
@@ -187,32 +187,29 @@ body, html {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   width: 100%;
   display: flex;
-  flex-direction: column; /* Stack heading and cards */
+  flex-direction: column;
 }
 
-/* Section Heading */
 .reminder-section h2 {
   margin-bottom: 16px;
   font-size: 1.5rem;
   color: var(--accent);
 }
 
-/* Horizontal Scroll Container */
-.reminder-cards {
+#reminderCards {
   display: flex;
   flex-direction: row;
   gap: 16px;
-  flex-wrap: nowrap;            /* ❗Force horizontal layout */
+  flex-wrap: nowrap;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 10px;
 }
 
-/* Hide Scrollbar (optional) */
-.reminder-cards::-webkit-scrollbar {
+#reminderCards::-webkit-scrollbar {
   display: none;
 }
 
-/* Individual Reminder Card */
 .reminder-card {
   background: #fff1f1;
   padding: 16px;
@@ -220,10 +217,8 @@ body, html {
   border-left: 5px solid var(--accent);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   width: 260px;
-  flex-shrink: 0;               /* ❗Prevent shrinking */
+  flex-shrink: 0;
 }
-
-
 
 .reminder-card h3 {
   margin: 0;
@@ -237,11 +232,36 @@ body, html {
   color: #444;
 }
 
-
-.bell {
-  font-size: 20px;
-  color: var(--accent);
+/* Button Styles */
+.ok-btn,
+.go-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  margin-right: 8px;
 }
+
+.ok-btn:hover,
+.go-btn:hover {
+  background-color: #45a049;
+}
+
+.ok-btn:disabled,
+.go-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================= */
+/* Modal (if used) */
+/* ============================= */
 
 .modal {
   position: fixed;
@@ -252,7 +272,6 @@ body, html {
   justify-content: center;
   align-items: center;
   z-index: 1000;
- 
 }
 
 .modal-content {
@@ -279,13 +298,6 @@ body, html {
   gap: 10px;
 }
 
-.modal-actions button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
-
 .modal-actions button#confirmAddLocation {
   background-color: #2ecc71;
   color: white;
@@ -300,7 +312,10 @@ body, html {
   display: none;
 }
 
-/* === Mobile: Collapse Sidebar === */
+/* ============================= */
+/* Responsive Styles */
+/* ============================= */
+
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;
@@ -349,56 +364,11 @@ body, html {
     grid-template-columns: 1fr;
   }
 
-}
-@media (max-width: 768px) {
-  .reminder-cards {
-    flex-wrap: wrap; /* allow wrapping into rows */
+  #reminderCards {
+    flex-wrap: wrap;
   }
 
   .reminder-card {
-    flex: 1 1 100%;  /* take full width on small screens */
+    flex: 1 1 100%;
   }
-}
-
-.ok-btn {
-  background-color: #4CAF50; /* green */
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.ok-btn:hover {
-  background-color: #45a049;
-}
-
-.ok-btn:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.go-btn {
-  background-color: #4CAF50; /* green */
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.go-btn:hover {
-  background-color: #45a049;
-}
-
-.go-btn:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  opacity: 0.6;
 }
