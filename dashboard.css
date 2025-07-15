@@ -219,6 +219,8 @@ body, html {
   border-radius: 10px;
   border-left: 5px solid var(--accent);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex: 0 0 260px; /* fixes width and prevents shrinking */
+  scroll-snap-align: start;
 }
 
 .reminder-card h3 {
