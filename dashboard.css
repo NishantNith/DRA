@@ -178,34 +178,42 @@ body, html {
 }
 
 
-/* Individual reminder card inside section */
+/* Reminder Section */
 .reminder-section {
   padding: 20px 25px;
   background: #fff;
   border-radius: 14px;
   border-left: 6px solid var(--accent);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-  width: 100%; /* Take full width */
+  width: 100%;
   display: flex;
-  flex-direction:row;
+  flex-direction: column; /* Stack heading and cards */
 }
 
-
+/* Section Heading */
 .reminder-section h2 {
   margin-bottom: 16px;
   font-size: 1.5rem;
   color: var(--accent);
 }
 
+/* Horizontal Scroll Container */
 .reminder-cards {
   display: flex;
   flex-direction: row;
   gap: 16px;
-  flex-wrap: wrap;              /* Wraps to next line */
-  justify-content: flex-start;  /* Align left */
+  flex-wrap: nowrap;            /* ❗Force horizontal layout */
+  overflow-x: auto;             /* ❗Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
 }
 
+/* Hide Scrollbar (optional) */
+.reminder-cards::-webkit-scrollbar {
+  display: none;
+}
 
+/* Individual Reminder Card */
 .reminder-card {
   background: #fff1f1;
   padding: 16px;
@@ -213,8 +221,9 @@ body, html {
   border-left: 5px solid var(--accent);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   width: 260px;
-  flex-shrink: 0;  /* Prevents the card from shrinking */
+  flex-shrink: 0;               /* ❗Prevent shrinking */
 }
+
 
 
 .reminder-card h3 {
