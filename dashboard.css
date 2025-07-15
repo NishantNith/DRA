@@ -180,14 +180,16 @@ body, html {
 
 /* Individual reminder card inside section */
 .reminder-section {
-  
   padding: 20px 25px;
   background: #fff;
   border-radius: 14px;
   border-left: 6px solid var(--accent);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
- 
+  width: 100%; /* Take full width */
+  display: flex;
+  flex-direction: column;
 }
+
 
 .reminder-section h2 {
   margin-bottom: 16px;
@@ -199,10 +201,10 @@ body, html {
   display: flex;
   flex-direction: row;
   gap: 16px;
-  flex-wrap: nowrap;        /* Keep all items in one row */
-  justify-content: flex-start; /* Align items to the start */
-  overflow: visible;        /* No scroll */
+  flex-wrap: wrap;              /* Wraps to next line */
+  justify-content: flex-start;  /* Align left */
 }
+
 
 .reminder-card {
   background: #fff1f1;
