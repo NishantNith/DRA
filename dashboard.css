@@ -200,6 +200,14 @@ body, html {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
+.reminder-cards::-webkit-scrollbar {
+  height: 8px;
+}
+
+.reminder-cards::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 4px;
+}
 
 .reminder-card {
   background: #fff1f1;
