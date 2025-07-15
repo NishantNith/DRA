@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const select = document.getElementById("locationSelect");
   const downloadBtn = document.getElementById("downloadBtn");
 
+  // Add loading spinner element
   let loadingSpinner = document.createElement("div");
   loadingSpinner.id = "loadingSpinner";
   loadingSpinner.style.display = "none";
@@ -87,19 +88,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           : [selected];
 
         const headers = [
-          "Sl No.",
-          "Description",
-          "Type of Permission",
-          "Agency",
-          "Applicabe (Yes/No)",
-          "Registred (Yes/No)",
-          "License/Registration/Documents nos.",
-          "Valid upto",
-          "Manpower Nos./ Quantity",
-          "Remarks"
+          "Description", "Permission Type", "Agency", "Applicable",
+          "Registered", "License", "Validity", "Remarks", "Quantity"
         ];
 
-        let maxRows = 0;
         const blocks = [];
 
         for (const location of locationsToExport) {
@@ -107,14 +99,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           const rows = [headers];
           let applicable = 0, registered = 0;
 
-          records.forEach((item, i) => {
+          for (const item of records) {
             const app = (item.applicable || "No").toLowerCase() === "yes";
             const reg = (item.registered || "No").toLowerCase() === "yes";
             if (app) applicable++;
             if (reg) registered++;
 
             rows.push([
-              i + 1,
               item.description || "N/A",
               item.permission_type || "N/A",
               item.agency || "N/A",
@@ -122,44 +113,29 @@ document.addEventListener("DOMContentLoaded", async () => {
               item.registered || "No",
               item.license || item.registration_number || "N/A",
               item.validity ? new Date(item.validity) : "N/A",
-              item.quantity || "N/A",
-              item.remarks || "N/A"
+              item.remarks || "N/A",
+              item.quantity || "N/A"
             ]);
-          });
-
-          rows.push(new Array(headers.length).fill(""));
-          rows.push(new Array(headers.length).fill(""));
+          }
 
           const percentage = applicable === 0 ? "0%" : ((registered / applicable) * 100).toFixed(1) + "%";
           rows.push([
             "Total Applicable", applicable,
             "Total Registered", registered,
             "% Registered", percentage,
-            "", "", "", "", ""
+            "", "", "", ""
           ]);
 
-          maxRows = Math.max(maxRows, rows.length);
           blocks.push({ title: location, rows });
         }
 
         const finalSheet = [];
-        for (let r = 0; r < maxRows + 1; r++) {
-          const row = [];
-          blocks.forEach((block, idx) => {
-            if (r === 0) {
-              row.push(block.title);
-              for (let i = 0; i < headers.length - 1; i++) row.push("");
-            } else {
-              const record = block.rows[r - 1];
-              if (record) row.push(...record);
-              else row.push(...new Array(headers.length).fill(""));
-            }
-            if (idx !== blocks.length - 1) {
-              row.push("", "");
-            }
-          });
-          finalSheet.push(row);
-        }
+
+        // Build blocks one after another without spacing
+        blocks.forEach((block) => {
+          finalSheet.push([block.title, ...new Array(headers.length - 1).fill("")]);
+          block.rows.forEach(row => finalSheet.push(row));
+        });
 
         const ws = XLSX.utils.aoa_to_sheet(finalSheet);
         const range = XLSX.utils.decode_range(ws['!ref']);
@@ -172,6 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!cell) continue;
             if (!cell.s) cell.s = {};
 
+            // Add border
             cell.s.border = {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
@@ -179,27 +156,33 @@ document.addEventListener("DOMContentLoaded", async () => {
               right: { style: "thin", color: { rgb: "000000" } }
             };
 
-            if (R === 0) {
-              cell.s.fill = { fgColor: { rgb: "FFC000" } }; // Yellow top row
-              cell.s.font = { bold: true };
+            // Header styling
+            if (R === 0 || (finalSheet[R - 1] && finalSheet[R - 1][0] === "Description")) {
+              cell.s.fill = { fgColor: { rgb: "4472C4" } };
+              cell.s.font = { bold: true, color: { rgb: "FFFFFF" } };
               cell.s.alignment = { horizontal: "center" };
             }
 
+            // Summary row styling
             if (typeof cell.v === "string" && cell.v.includes("% Registered")) {
               cell.s.fill = { fgColor: { rgb: "D9D9D9" } };
               cell.s.font = { bold: true };
-            } else if (R % 2 === 0 && R !== 0) {
-              cell.s.fill = { fgColor: { rgb: "FBE4D5" } }; // light row background
             }
 
+            // Alternate row background
+            else if (R % 2 === 0 && R !== 0) {
+              cell.s.fill = { fgColor: { rgb: "F2F2F2" } };
+            }
+
+            // Format date
             if (cell.v instanceof Date) {
               cell.t = "d";
-              cell.z = XLSX.SSF._table[14];
+              cell.z = XLSX.SSF._table[14]; // 'm/d/yy'
             }
           }
         }
 
-        ws["!cols"] = new Array(finalSheet[0].length).fill({ wch: 20 });
+        ws["!cols"] = new Array(finalSheet[0].length).fill({ wch: 18 });
 
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Work Details");
@@ -209,6 +192,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showLoading(false);
         alert("Error generating Excel file.");
       }
-    }, 500);
+    }, 500); // 0.5s delay for UX
   });
 });
