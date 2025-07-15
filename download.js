@@ -2,19 +2,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const select = document.getElementById("locationSelect");
   const downloadBtn = document.getElementById("downloadBtn");
 
-  // Add loading spinner element
-  let loadingSpinner = document.createElement("div");
+  const loadingSpinner = document.createElement("div");
   loadingSpinner.id = "loadingSpinner";
-  loadingSpinner.style.display = "none";
-  loadingSpinner.style.position = "fixed";
-  loadingSpinner.style.top = "0";
-  loadingSpinner.style.left = "0";
-  loadingSpinner.style.width = "100vw";
-  loadingSpinner.style.height = "100vh";
-  loadingSpinner.style.background = "rgba(255,255,255,0.7)";
-  loadingSpinner.style.zIndex = "9999";
-  loadingSpinner.style.justifyContent = "center";
-  loadingSpinner.style.alignItems = "center";
+  loadingSpinner.style = `
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255,0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  `;
   loadingSpinner.innerHTML = `
     <div style="display:flex;flex-direction:column;align-items:center;">
       <div class="spinner" style="border: 8px solid #f3f3f3; border-top: 8px solid #4297a0; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;"></div>
@@ -25,10 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     </style>
   `;
   document.body.appendChild(loadingSpinner);
-
-  function showLoading(show) {
-    loadingSpinner.style.display = show ? "flex" : "none";
-  }
+  const showLoading = show => loadingSpinner.style.display = show ? "flex" : "none";
 
   const API_BASE = window.location.hostname === "localhost"
     ? "http://localhost:3000"
@@ -40,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch(`${API_BASE}/leh-data`);
     data = await res.json();
     showLoading(false);
-  } catch (err) {
+  } catch {
     showLoading(false);
     alert("Failed to load data from server.");
     return;
@@ -79,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (filtered.length === 0) {
           showLoading(false);
-          alert("No data found for selected location.");
+          alert("No data found.");
           return;
         }
 
@@ -92,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           "Registered", "License", "Validity", "Remarks", "Quantity"
         ];
 
+        let maxRows = 0;
         const blocks = [];
 
         for (const location of locationsToExport) {
@@ -100,8 +98,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           let applicable = 0, registered = 0;
 
           for (const item of records) {
-            const app = (item.applicable || "No").toLowerCase() === "yes";
-            const reg = (item.registered || "No").toLowerCase() === "yes";
+            const app = (item.applicable || "").toLowerCase() === "yes";
+            const reg = (item.registered || "").toLowerCase() === "yes";
             if (app) applicable++;
             if (reg) registered++;
 
@@ -119,23 +117,34 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           const percentage = applicable === 0 ? "0%" : ((registered / applicable) * 100).toFixed(1) + "%";
+
           rows.push([
             "Total Applicable", applicable,
             "Total Registered", registered,
             "% Registered", percentage,
-            "", "", "", ""
+            "", "", "", "", ""
           ]);
 
+          maxRows = Math.max(maxRows, rows.length);
           blocks.push({ title: location, rows });
         }
 
         const finalSheet = [];
-
-        // Build blocks one after another without spacing
-        blocks.forEach((block) => {
-          finalSheet.push([block.title, ...new Array(headers.length - 1).fill("")]);
-          block.rows.forEach(row => finalSheet.push(row));
-        });
+        for (let r = 0; r < maxRows + 1; r++) {
+          const row = [];
+          blocks.forEach((block, idx) => {
+            if (r === 0) {
+              row.push(block.title, ...new Array(headers.length - 1).fill(""));
+            } else {
+              const record = block.rows[r - 1];
+              row.push(...(record || new Array(headers.length).fill("")));
+            }
+            if (idx !== blocks.length - 1) {
+              // no empty column between blocks
+            }
+          });
+          finalSheet.push(row);
+        }
 
         const ws = XLSX.utils.aoa_to_sheet(finalSheet);
         const range = XLSX.utils.decode_range(ws['!ref']);
@@ -148,7 +157,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!cell) continue;
             if (!cell.s) cell.s = {};
 
-            // Add border
             cell.s.border = {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
@@ -156,28 +164,22 @@ document.addEventListener("DOMContentLoaded", async () => {
               right: { style: "thin", color: { rgb: "000000" } }
             };
 
-            // Header styling
-            if (R === 0 || (finalSheet[R - 1] && finalSheet[R - 1][0] === "Description")) {
+            if (R === 0) {
               cell.s.fill = { fgColor: { rgb: "4472C4" } };
               cell.s.font = { bold: true, color: { rgb: "FFFFFF" } };
               cell.s.alignment = { horizontal: "center" };
             }
 
-            // Summary row styling
             if (typeof cell.v === "string" && cell.v.includes("% Registered")) {
               cell.s.fill = { fgColor: { rgb: "D9D9D9" } };
               cell.s.font = { bold: true };
-            }
-
-            // Alternate row background
-            else if (R % 2 === 0 && R !== 0) {
+            } else if (R % 2 === 0 && R !== 0) {
               cell.s.fill = { fgColor: { rgb: "F2F2F2" } };
             }
 
-            // Format date
             if (cell.v instanceof Date) {
               cell.t = "d";
-              cell.z = XLSX.SSF._table[14]; // 'm/d/yy'
+              cell.z = XLSX.SSF._table[14];
             }
           }
         }
@@ -186,12 +188,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Work Details");
-        XLSX.writeFile(wb, selected === "all" ? "Final_Styled_Export.xlsx" : `${selected}_Export.xlsx`);
+        XLSX.writeFile(wb, selected === "all" ? "Final_Horizontal_Export.xlsx" : `${selected}_Export.xlsx`);
         showLoading(false);
       } catch (err) {
         showLoading(false);
         alert("Error generating Excel file.");
       }
-    }, 500); // 0.5s delay for UX
+    }, 500);
   });
 });
