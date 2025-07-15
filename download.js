@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const select = document.getElementById("locationSelect");
   const downloadBtn = document.getElementById("downloadBtn");
 
-  // Add loading spinner element
   let loadingSpinner = document.createElement("div");
   loadingSpinner.id = "loadingSpinner";
   loadingSpinner.style.display = "none";
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadingSpinner.style.display = show ? "flex" : "none";
   }
 
-  // Use deployed backend
   const API_BASE = window.location.hostname === "localhost"
     ? "http://localhost:3000"
     : "https://dra-backend.onrender.com";
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filteredData = data.filter(entry => activeLocations.includes(entry.location));
   const uniqueLocations = [...new Set(filteredData.map(d => d.location))];
 
-  // Populate dropdown
   select.innerHTML = `<option value="all">All Locations</option>`;
   uniqueLocations.forEach(loc => {
     const opt = document.createElement("option");
@@ -72,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   downloadBtn.addEventListener("click", () => {
     showLoading(true);
-    setTimeout(() => { // simulate loading for UX
+    setTimeout(() => {
       try {
         const selected = select.value;
         const filtered = selected === "all"
@@ -90,8 +87,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           : [selected];
 
         const headers = [
-          "Description", "Permission Type", "Agency", "Applicable",
-          "Registered", "License", "Validity", "Remarks", "Quantity"
+          "Sl No.",
+          "Description",
+          "Type of Permission",
+          "Agency",
+          "Applicabe (Yes/No)",
+          "Registred (Yes/No)",
+          "License/Registration/Documents nos.",
+          "Valid upto",
+          "Manpower Nos./ Quantity",
+          "Remarks"
         ];
 
         let maxRows = 0;
@@ -102,13 +107,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           const rows = [headers];
           let applicable = 0, registered = 0;
 
-          for (const item of records) {
+          records.forEach((item, i) => {
             const app = (item.applicable || "No").toLowerCase() === "yes";
             const reg = (item.registered || "No").toLowerCase() === "yes";
             if (app) applicable++;
             if (reg) registered++;
 
             rows.push([
+              i + 1,
               item.description || "N/A",
               item.permission_type || "N/A",
               item.agency || "N/A",
@@ -116,12 +122,11 @@ document.addEventListener("DOMContentLoaded", async () => {
               item.registered || "No",
               item.license || item.registration_number || "N/A",
               item.validity ? new Date(item.validity) : "N/A",
-              item.remarks || "N/A",
-              item.quantity || "N/A"
+              item.quantity || "N/A",
+              item.remarks || "N/A"
             ]);
-          }
+          });
 
-          // Add 2 empty rows before summary
           rows.push(new Array(headers.length).fill(""));
           rows.push(new Array(headers.length).fill(""));
 
@@ -130,14 +135,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             "Total Applicable", applicable,
             "Total Registered", registered,
             "% Registered", percentage,
-            "", "", ""
+            "", "", "", "", ""
           ]);
 
           maxRows = Math.max(maxRows, rows.length);
           blocks.push({ title: location, rows });
         }
 
-        // Build finalSheet with 2-column gap between blocks
         const finalSheet = [];
         for (let r = 0; r < maxRows + 1; r++) {
           const row = [];
@@ -168,7 +172,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!cell) continue;
             if (!cell.s) cell.s = {};
 
-            // Add border
             cell.s.border = {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
@@ -176,33 +179,27 @@ document.addEventListener("DOMContentLoaded", async () => {
               right: { style: "thin", color: { rgb: "000000" } }
             };
 
-            // Header styling
             if (R === 0) {
-              cell.s.fill = { fgColor: { rgb: "4472C4" } };
-              cell.s.font = { bold: true, color: { rgb: "FFFFFF" } };
+              cell.s.fill = { fgColor: { rgb: "FFC000" } }; // Yellow top row
+              cell.s.font = { bold: true };
               cell.s.alignment = { horizontal: "center" };
             }
 
-            // Summary row styling
             if (typeof cell.v === "string" && cell.v.includes("% Registered")) {
               cell.s.fill = { fgColor: { rgb: "D9D9D9" } };
               cell.s.font = { bold: true };
+            } else if (R % 2 === 0 && R !== 0) {
+              cell.s.fill = { fgColor: { rgb: "FBE4D5" } }; // light row background
             }
 
-            // Alternate row background
-            else if (R % 2 === 0 && R !== 0) {
-              cell.s.fill = { fgColor: { rgb: "F2F2F2" } };
-            }
-
-            // Format date
             if (cell.v instanceof Date) {
               cell.t = "d";
-              cell.z = XLSX.SSF._table[14]; // 'm/d/yy'
+              cell.z = XLSX.SSF._table[14];
             }
           }
         }
 
-        ws["!cols"] = new Array(finalSheet[0].length).fill({ wch: 18 });
+        ws["!cols"] = new Array(finalSheet[0].length).fill({ wch: 20 });
 
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Work Details");
@@ -212,6 +209,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showLoading(false);
         alert("Error generating Excel file.");
       }
-    }, 500); // 0.5s delay for UX
+    }, 500);
   });
 });
