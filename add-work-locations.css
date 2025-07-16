@@ -83,3 +83,45 @@ button:active {
     padding: 12px;
   }
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f3f6;
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Delete Button Inside List */
+li button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+li button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+li button:active {
+  transform: scale(0.98);
+}
